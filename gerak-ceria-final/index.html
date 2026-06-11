@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerak Ceria AI Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       SPLASH SCREEN
+  ══════════════════════════════════════ -->
+  <div id="splashScreen" class="screen active">
+    <div class="splash-bg">
+      <div class="bubble b1"></div>
+      <div class="bubble b2"></div>
+      <div class="bubble b3"></div>
+      <div class="bubble b4"></div>
+    </div>
+    <div class="splash-content">
+      <div class="splash-logo">
+        <div class="logo-icon">🏃</div>
+        <h1 class="logo-title"><span>Gerak</span> Ceria</h1>
+        <span class="logo-sub">AI Adventure</span>
+      </div>
+      <div class="splash-tagline-quote">"Misi Estafet Sehat"</div>
+      <div class="splash-mascot">
+        <div class="mascot-body" id="splashMascot">🤖</div>
+        <div class="mascot-bubble">Halo! Ayo bergerak bersama!</div>
+      </div>
+      <div class="splash-chars">
+        <div class="char c1">🧒</div>
+        <div class="char c2">🏅</div>
+        <div class="char c3">⭐</div>
+      </div>
+      <button class="btn-main green pulse" id="btnSplashStart">
+        🚀 Mulai Bermain!
+      </button>
+      <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:600;">Game Olahraga AI untuk Siswa SD Kelas V</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MAIN MENU — Game Tablet UI
+  ══════════════════════════════════════ -->
+  <div id="mainMenu" class="screen">
+    <!-- Animated outdoor scene background -->
+    <div class="menu-scene-bg">
+      <div class="scene-clouds"></div>
+      <div class="scene-hills"></div>
+      <div class="scene-track-strip"></div>
+      <div class="scene-track-lines"></div>
+      <div class="scene-char-l">🧒</div>
+      <div class="scene-char-r">👧</div>
+    </div>
+
+    <!-- Logo banner -->
+    <div class="menu-logo-banner">
+      <div class="menu-logo-main">🏃 <span>Gerak</span> Ceria</div>
+      <div class="menu-logo-sub">AI Adventure</div>
+      <div class="menu-logo-tagline">"Misi Estafet Sehat"</div>
+    </div>
+
+    <!-- Main tablet card -->
+    <div class="menu-tablet">
+
+      <!-- Tablet header bar -->
+      <div class="tablet-header">
+        <div class="player-avatar-thumb">🧒</div>
+        <div style="flex:1">
+          <div class="player-greeting-text">Hai, Atlet! <span id="menuPlayerName"></span></div>
+          <div class="player-level-info">Level <span id="menuPlayerLevel">1</span></div>
+        </div>
+        <div class="stars-badge">⭐ <span id="menuStars">0</span></div>
+        <button class="btn-settings-icon" onclick="showScreen('settingsScreen')">⚙️</button>
+      </div>
+
+      <!-- Tablet body: sidebar + content + mascot -->
+      <div class="tablet-body">
+
+        <!-- Left sidebar nav -->
+        <div class="tablet-sidebar">
+          <button class="sidebar-nav-item" onclick="showScreen('portfolioScreen')">
+            <div class="sidebar-nav-icon">🏆</div>
+            <div class="sidebar-nav-label">Peringkat</div>
+          </button>
+          <button class="sidebar-nav-item" onclick="showScreen('badgeScreen')">
+            <div class="sidebar-nav-icon">🛍️</div>
+            <div class="sidebar-nav-label">Toko</div>
+          </button>
+          <button class="sidebar-nav-item" onclick="showScreen('settingsScreen')">
+            <div class="sidebar-nav-icon">📖</div>
+            <div class="sidebar-nav-label">Panduan</div>
+          </button>
+          <button class="sidebar-nav-item" onclick="showScreen('referenceScreen')">
+            <div class="sidebar-nav-icon">📁</div>
+            <div class="sidebar-nav-label">Referensi</div>
+          </button>
+        </div>
+
+        <!-- Main content -->
+        <div class="tablet-content">
+          <button class="menu-play-btn" onclick="showScreen('missionMap')">
+            ▶ PLAY
+          </button>
+          <div class="menu-feature-grid">
+            <button class="feature-card-btn orange" onclick="showScreen('warmupScreen')">
+              <div class="fcb-icon">🔥</div>
+              <div class="fcb-text">AI WARM UP</div>
+            </button>
+            <button class="feature-card-btn blue" onclick="showScreen('missionMap')">
+              <div class="fcb-icon">🗺️</div>
+              <div class="fcb-text">MISSION MAP</div>
+            </button>
+            <button class="feature-card-btn purple" onclick="showScreen('badgeScreen')">
+              <div class="fcb-icon">🏅</div>
+              <div class="fcb-text">BADGE KOLEKSI</div>
+            </button>
+            <button class="feature-card-btn yellow" onclick="showScreen('portfolioScreen')">
+              <div class="fcb-icon">📊</div>
+              <div class="fcb-text">PORTOFOLIO</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mascot panel -->
+        <div class="tablet-mascot-panel">
+          <div class="mascot-robot-icon" id="aiCoach">🤖</div>
+          <div class="mascot-speech-bubble" id="coachSpeech">Ayo bergerak, jadi anak sehat dan hebat!</div>
+        </div>
+
+      </div><!-- end tablet-body -->
+
+      <!-- Tablet footer -->
+      <div class="tablet-footer">
+        <div class="energy-display-bar">
+          <div class="energy-label-sm">⚡ Energi</div>
+          <div class="energy-bar-sm-outer">
+            <div class="energy-bar-sm-fill" id="menuEnergyBar" style="width:0%"></div>
+          </div>
+          <div class="energy-val-sm"><span id="menuEnergy">0</span>/100</div>
+        </div>
+        <button class="feature-card-btn red" style="padding:8px 14px;font-size:0.72rem;" onclick="showScreen('motionChallenge')">
+          <div class="fcb-icon" style="font-size:1rem;">⚡</div>
+          <div class="fcb-text">CHALLENGE</div>
+        </button>
+      </div>
+
+    </div><!-- end menu-tablet -->
+  </div>
+
+  <!-- ══════════════════════════════════════
+       REFERENSI GERAKAN SCREEN (NEW)
+  ══════════════════════════════════════ -->
+  <div id="referenceScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>📁 Referensi Gerakan</h2>
+      <div style="font-size:0.8rem;font-weight:700;color:#64748b;background:#f1f5f9;padding:5px 12px;border-radius:50px;">
+        <span id="refCount">0</span> File
+      </div>
+    </div>
+
+    <div style="padding:16px;display:flex;flex-direction:column;gap:16px;flex:1;overflow-y:auto;background:linear-gradient(135deg,#eff6ff,#f0fdf4);">
+
+      <!-- Upload Card -->
+      <div style="background:#fff;border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#1d4ed8;margin-bottom:14px;">
+          📤 Upload File Referensi
+        </h3>
+        <p style="font-size:0.85rem;color:#64748b;font-weight:600;margin-bottom:14px;">
+          Upload gambar atau video gerakan olahraga sebagai referensi saat latihan. File ini akan ditampilkan di layar saat kamu berolahraga.
+        </p>
+
+        <div class="upload-drop-zone" id="refDropZone" onclick="document.getElementById('referenceFileInput').click()">
+          <span class="upload-drop-icon">📂</span>
+          <div class="upload-drop-text">Klik atau seret file ke sini</div>
+          <div class="upload-drop-sub">Mendukung: JPG, PNG, GIF, MP4, MOV, WebM • Maks 50MB per file</div>
+          <input type="file" id="referenceFileInput" accept="image/*,video/*" multiple>
+          <button class="btn-upload-file" onclick="event.stopPropagation();document.getElementById('referenceFileInput').click()">
+            📤 Pilih File
+          </button>
+        </div>
+      </div>
+
+      <!-- Uploaded files list -->
+      <div style="background:#fff;border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <h3 style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:#1e293b;">
+            🗂️ File Tersimpan
+          </h3>
+          <button id="btnClearAllRefs" onclick="clearAllReferences()" 
+            style="background:#fee2e2;color:#dc2626;border:none;border-radius:50px;padding:6px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.75rem;cursor:pointer;">
+            🗑️ Hapus Semua
+          </button>
+        </div>
+        <div id="referencesList" class="reference-previews">
+          <div class="empty-refs">Belum ada file yang diupload. Upload gambar atau video gerakan untuk memulai!</div>
+        </div>
+      </div>
+
+      <!-- How to use -->
+      <div style="background:linear-gradient(135deg,#1d4ed8,#7c3aed);border-radius:20px;padding:20px;color:#fff;">
+        <h3 style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:10px;">💡 Cara Menggunakan</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;font-weight:600;opacity:0.9;">
+          <div>1️⃣ Upload gambar atau video gerakan yang ingin dijadikan referensi</div>
+          <div>2️⃣ Buka layar AI Warm-Up atau Motion Challenge</div>
+          <div>3️⃣ Pilih referensi aktif — file akan tampil di pojok kamera</div>
+          <div>4️⃣ Ikuti gerakan sesuai referensi yang dipilih!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       AI WARM-UP SCREEN
+  ══════════════════════════════════════ -->
+  <div id="warmupScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>🔥 AI Warm-Up</h2>
+      <div class="warmup-energy-bar-mini">⚡ <span id="warmupEnergyVal">0</span>%</div>
+    </div>
+
+    <div class="warmup-body">
+      <!-- Left: AI Avatar + Instructions -->
+      <div class="warmup-left">
+        <div class="warmup-coach">
+          <div class="coach-robot big bounce" id="warmupCoach">🤖</div>
+          <div class="coach-speech" id="warmupInstruction">Klik mulai untuk memulai pemanasan!</div>
+        </div>
+        <div class="current-move-card" id="currentMoveCard">
+          <div class="move-icon" id="warmupMoveIcon">🙌</div>
+          <div class="move-name" id="warmupMoveName">Siap...</div>
+          <div class="move-count">
+            Reps: <span id="warmupReps">0</span> / <span id="warmupTarget">0</span>
+          </div>
+        </div>
+        <div class="warmup-energy-container">
+          <div class="energy-label">Energy Bar</div>
+          <div class="energy-bar-outer">
+            <div class="energy-bar-fill" id="warmupEnergyBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="warmup-moves-list" id="warmupMovesList"></div>
+
+        <!-- ★ REFERENSI GERAKAN UPLOAD PANEL -->
+        <div class="reference-upload-panel">
+          <h4>📁 Referensi Gerakan</h4>
+          <div class="upload-drop-zone" id="warmupDropZone" onclick="document.getElementById('warmupFileInput').click()">
+            <span class="upload-drop-icon" style="font-size:1.8rem;">📤</span>
+            <div class="upload-drop-text">Upload Gambar / Video</div>
+            <div class="upload-drop-sub">Tampil di layar kamera saat latihan</div>
+            <input type="file" id="warmupFileInput" accept="image/*,video/*" multiple>
+          </div>
+          <div id="warmupRefPreviews" class="reference-previews">
+            <div class="empty-refs" id="warmupRefEmpty">Belum ada referensi. Upload untuk mulai!</div>
+          </div>
+          <button class="btn-upload-file" style="width:100%;justify-content:center;margin-top:8px;" onclick="document.getElementById('warmupFileInput').click()">
+            📂 Tambah Referensi
+          </button>
+        </div>
+
+        <button class="btn-main green" id="btnStartWarmup" onclick="startWarmup()">
+          🔥 Mulai Pemanasan!
+        </button>
+      </div>
+
+      <!-- Right: Camera Feed -->
+      <div class="warmup-right">
+        <div class="camera-panel">
+          <div class="panel-badge you">📷 Kamu</div>
+          <div class="ai-detection-badge" id="aiDetectionBadge">✓ BENAR!</div>
+          <!-- Active reference overlay -->
+          <div class="active-ref-overlay hidden" id="activeRefOverlay">
+            <div id="activeRefContent"></div>
+            <div class="active-ref-label">📌 Referensi</div>
+          </div>
+          <video id="warmupVideo" playsinline muted autoplay></video>
+          <canvas id="warmupCanvas"></canvas>
+          <div class="skeleton-label">AI Body Tracking</div>
+        </div>
+        <div class="warmup-feedback" id="warmupFeedback">
+          <div class="feedback-icon">⭐</div>
+          <div class="feedback-text" id="warmupFeedbackText">Ayo mulai bergerak!</div>
+        </div>
+        <div class="countdown-badge hidden" id="warmupCountdown">3</div>
+      </div>
+    </div>
+
+    <div class="stars-burst hidden" id="starsBurst">
+      <div class="star s1">⭐</div>
+      <div class="star s2">🌟</div>
+      <div class="star s3">⭐</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MISSION MAP
+  ══════════════════════════════════════ -->
+  <div id="missionMap" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>🗺️ Mission Map</h2>
+      <div class="map-stars-total">⭐ <span id="totalMapStars">0</span>/15</div>
+    </div>
+    <div class="map-container">
+      <div class="map-path">
+        <div id="mapNodes" class="map-nodes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MINI GAME SCREEN
+  ══════════════════════════════════════ -->
+  <div id="miniGameScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" id="btnMiniBack" onclick="exitMiniGame()">← Keluar</button>
+      <h2 id="miniGameTitle">Mini Game</h2>
+      <div class="mini-hud">
+        <span class="hud-item">⏱ <span id="miniTimer">30</span>s</span>
+        <span class="hud-item">🏆 <span id="miniScore">0</span></span>
+        <span class="hud-item">🔥 <span id="miniCombo">x1</span></span>
+      </div>
+    </div>
+    <div class="minigame-body" id="miniGameBody">
+      <canvas id="miniGameCanvas"></canvas>
+      <div class="mini-camera-overlay">
+        <video id="miniVideo" playsinline muted autoplay></video>
+        <canvas id="miniCameraCanvas"></canvas>
+      </div>
+    </div>
+    <div class="mini-result hidden" id="miniResult">
+      <div class="mini-result-card">
+        <div class="result-emoji" id="resultEmoji">🎉</div>
+        <h3 id="resultTitle">Hebat!</h3>
+        <div class="result-score-big" id="resultScoreBig">0</div>
+        <div class="result-stars" id="resultStars">⭐⭐⭐</div>
+        <div class="confetti-container" id="confettiContainer"></div>
+        <div class="result-btns">
+          <button class="btn-main green" id="btnPlayAgain">🔄 Main Lagi</button>
+          <button class="btn-main blue" onclick="exitMiniGame()">🗺️ Mission Map</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MOTION CHALLENGE
+  ══════════════════════════════════════ -->
+  <div id="motionChallenge" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>⚡ AI Motion Challenge</h2>
+      <div class="challenge-score">🏆 <span id="challengeScore">0</span></div>
+    </div>
+    <div class="challenge-body">
+      <div class="challenge-left">
+        <div class="challenge-card" id="challengeCard">
+          <div class="challenge-coach">🤖</div>
+          <div class="challenge-text" id="challengeText">Tekan mulai!</div>
+          <div class="challenge-timer-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#4ade80" stroke-width="8"
+                stroke-dasharray="251.2" stroke-dashoffset="0" id="challengeRing"
+                stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            </svg>
+            <div class="ring-number" id="challengeRingNum">5</div>
+          </div>
+        </div>
+        <div class="challenge-combo-display">
+          <span class="combo-label">COMBO</span>
+          <span class="combo-val" id="challengeCombo">x1</span>
+        </div>
+        <div class="challenge-feedback" id="challengeFeedback">Siap untuk tantangan?</div>
+        <button class="btn-main orange" id="btnStartChallenge" onclick="startChallenge()">
+          ⚡ Mulai Challenge!
+        </button>
+      </div>
+      <div class="challenge-right">
+        <div class="camera-panel">
+          <div class="panel-badge you">📷 Kamu</div>
+          <!-- Active reference overlay for challenge -->
+          <div class="active-ref-overlay hidden" id="challengeRefOverlay">
+            <div id="challengeRefContent"></div>
+            <div class="active-ref-label">📌 Referensi</div>
+          </div>
+          <video id="challengeVideo" playsinline muted autoplay></video>
+          <canvas id="challengeCanvas"></canvas>
+        </div>
+        <div class="challenge-history" id="challengeHistory">
+          <div class="history-title">Riwayat Gerakan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MULTIPLAYER ESTAFET
+  ══════════════════════════════════════ -->
+  <div id="multiplayerScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>👥 Estafet Tim</h2>
+      <div class="multi-round">Ronde <span id="multiRound">1</span>/5</div>
+    </div>
+    <div class="multi-body">
+      <div class="multi-scoreboard">
+        <div class="team-score red-team">
+          <div class="team-label red">🔴 Tim Merah</div>
+          <div class="team-score-val" id="redScore">0</div>
+          <div class="team-bar-outer">
+            <div class="team-bar-fill red" id="redBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="team-score blue-team">
+          <div class="team-label blue">🔵 Tim Biru</div>
+          <div class="team-score-val" id="blueScore">0</div>
+          <div class="team-bar-outer">
+            <div class="team-bar-fill blue" id="blueBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="relay-track">
+        <div class="relay-runner" id="redRunner">🏃</div>
+        <div class="relay-path"></div>
+        <div class="relay-runner" id="blueRunner">🏃</div>
+      </div>
+      <div class="multi-challenge-area">
+        <div class="multi-camera">
+          <video id="multiVideo" playsinline muted autoplay></video>
+          <canvas id="multiCanvas"></canvas>
+          <div class="active-team-badge" id="activeTeamBadge">🔴 Tim Merah</div>
+        </div>
+        <div class="multi-challenge-info">
+          <div class="current-challenge-text" id="multiChallengeText">Tekan mulai untuk memulai!</div>
+          <div class="relay-timer">
+            <div class="relay-timer-val" id="relayTimer">10</div>
+            <div class="relay-timer-label">detik</div>
+          </div>
+          <button class="btn-main red" id="btnStartRelay" onclick="startRelay()">
+            🏁 Mulai Estafet!
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="multi-result hidden" id="multiResult">
+      <div class="winner-banner" id="winnerBanner"></div>
+      <div class="fireworks" id="fireworks"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BADGE COLLECTION
+  ══════════════════════════════════════ -->
+  <div id="badgeScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>🏅 Badge Koleksi</h2>
+      <div class="badge-count-disp"><span id="badgeCount">0</span>/8 Badge</div>
+    </div>
+    <div class="badge-grid" id="badgeGrid"></div>
+    <div class="badge-detail-overlay hidden" id="badgeDetailOverlay">
+      <div class="badge-detail-card">
+        <div class="badge-detail-icon" id="badgeDetailIcon">🏅</div>
+        <h3 id="badgeDetailName">Badge</h3>
+        <p id="badgeDetailDesc">Deskripsi</p>
+        <div id="badgeDetailStatus" class="badge-detail-status"></div>
+        <button class="btn-main blue" onclick="closeBadgeDetail()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PORTFOLIO
+  ══════════════════════════════════════ -->
+  <div id="portfolioScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>📊 Portofolio Digital</h2>
+    </div>
+    <div class="portfolio-body">
+      <div class="portfolio-hero">
+        <div class="portfolio-avatar">🧒</div>
+        <div class="portfolio-info">
+          <h3 id="portName">Pemain Baru</h3>
+          <div class="port-level">Level <span id="portLevel">1</span> Atlet</div>
+          <div class="port-exp-bar">
+            <div class="port-exp-fill" id="portExpFill" style="width:0%"></div>
+          </div>
+          <div class="port-exp-label"><span id="portExp">0</span>/100 XP</div>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-val" id="portStars">0</div>
+          <div class="stat-label">Total Bintang</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏅</div>
+          <div class="stat-val" id="portBadges">0</div>
+          <div class="stat-label">Badge</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-val" id="portStreak">0</div>
+          <div class="stat-label">Hari Berturut</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-val" id="portMoves">0</div>
+          <div class="stat-label">Total Gerakan</div>
+        </div>
+      </div>
+      <div class="activity-chart-section">
+        <h4>📈 Grafik Aktivitas (7 Hari Terakhir)</h4>
+        <div class="chart-container">
+          <canvas id="activityChart"></canvas>
+        </div>
+      </div>
+      <div class="activity-log-section">
+        <h4>📋 Riwayat Aktivitas</h4>
+        <div class="activity-log" id="activityLog"></div>
+      </div>
+      <div class="ai-coach-feedback-section">
+        <h4>🤖 AI Coach Feedback</h4>
+        <div class="coach-feedback-card" id="coachFeedbackCard">
+          <div class="feedback-good">
+            <div class="fb-label green">✅ Sudah Bagus</div>
+            <div id="fbGood">Belum ada data.</div>
+          </div>
+          <div class="feedback-improve">
+            <div class="fb-label orange">🔧 Perlu Diperbaiki</div>
+            <div id="fbImprove">Belum ada data.</div>
+          </div>
+          <div class="feedback-stats">
+            <span>🔥 Kalori: ~<span id="fbCalories">0</span> kal</span>
+            <span>⚡ Gerakan: <span id="fbMovesTotal">0</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SETTINGS
+  ══════════════════════════════════════ -->
+  <div id="settingsScreen" class="screen">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('mainMenu')">← Kembali</button>
+      <h2>⚙️ Pengaturan</h2>
+    </div>
+    <div class="settings-body">
+      <div class="settings-card">
+        <label class="settings-label">👤 Nama Pemain</label>
+        <input class="settings-input" id="settingName" placeholder="Masukkan nama kamu...">
+      </div>
+      <div class="settings-card">
+        <label class="settings-label">🔊 Suara</label>
+        <div class="toggle-row">
+          <span>Sound Effect</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingSound" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <span>Musik Latar</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingMusic" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-card">
+        <label class="settings-label">📷 Kamera</label>
+        <div class="toggle-row">
+          <span>AI Body Tracking</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingTracking" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-card danger">
+        <label class="settings-label">⚠️ Reset Data</label>
+        <button class="btn-main red" onclick="resetGameData()">🗑️ Hapus Semua Data</button>
+      </div>
+      <button class="btn-main green" onclick="saveSettings()">💾 Simpan</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       GLOBAL OVERLAYS
+  ══════════════════════════════════════ -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loading-robot">🤖</div>
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loadingText">Memuat AI...</div>
+  </div>
+
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+  <div class="toast hidden" id="toast"></div>
+
+  <div class="modal hidden" id="qrModal">
+    <div class="modal-card">
+      <h3>📷 Scan QR Mission</h3>
+      <div class="qr-scanner-area" id="qrScannerArea">
+        <video id="qrVideo" playsinline muted></video>
+        <div class="qr-frame"></div>
+      </div>
+      <p class="qr-hint">Arahkan kamera ke QR code mission</p>
+      <button class="btn-main blue" onclick="closeQRModal()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- MediaPipe -->
+  <script type="module">
+    import { PoseLandmarker, FilesetResolver } from
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+    window.PoseLandmarker = PoseLandmarker;
+    window.FilesetResolver = FilesetResolver;
+  </script>
+
+  <!-- App Scripts -->
+  <script src="js/state.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/ai/poseDetector.js"></script>
+  <script src="js/ai/gestureDetector.js"></script>
+  <script src="js/ai/emotionDetector.js"></script>
+  <script src="js/ui/mascot.js"></script>
+  <script src="js/ui/badge.js"></script>
+  <script src="js/ui/chart.js"></script>
+  <script src="js/games/warmup.js"></script>
+  <script src="js/games/motionChallenge.js"></script>
+  <script src="js/games/multiplayer.js"></script>
+  <script src="js/games/miniGames.js"></script>
+  <script src="js/missionMap.js"></script>
+  <script src="js/portfolio.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/referenceManager.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
