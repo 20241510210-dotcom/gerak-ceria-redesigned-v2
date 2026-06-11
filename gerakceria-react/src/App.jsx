@@ -1,4 +1,4 @@
-import GerakCeriaIntegrated from "./GerakCeria_integrated";
+import GerakCeriaIntegrated from "./GerakCeria_Integrated";
 
 function App() {
   return <GerakCeriaIntegrated />;
