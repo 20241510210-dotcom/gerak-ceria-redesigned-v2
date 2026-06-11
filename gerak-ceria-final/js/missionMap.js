@@ -262,6 +262,10 @@ const MISSIONS = [
     showScreen('missionMap');
   };
 
+<<<<<<< HEAD
   window.MissionMap  = { render: renderMap, startMission };
   window.startMission = startMission;
+=======
+  window.MissionMap = { render: renderMap, startMission };
+>>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 })();
