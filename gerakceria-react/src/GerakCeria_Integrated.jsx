@@ -213,20 +213,12 @@ const EmotionDetector = (() => {
 })();
 
 // ─── CAMERA HOOK ──────────────────────────────────────────────────────────────
-<<<<<<< HEAD
 function useCameraTracking() {
-=======
-// Reusable hook: starts webcam, inits PoseDetector, runs animation loop.
-// Returns { videoRef, canvasRef, cameraReady, cameraError, poseReady,
-//           startCamera, stopCamera, lastAngles, lastGesture, poseDetected }
-function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   const videoRef    = useRef(null);
   const canvasRef   = useRef(null);
   const streamRef   = useRef(null);
   const rafRef      = useRef(null);
   const lastGestRef = useRef(false);
-<<<<<<< HEAD
   const moveTargetRef  = useRef(null);
   const onDetectRef    = useRef(null);
   const isRunningRef   = useRef(false);
@@ -275,77 +267,16 @@ function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
       const ts = performance.now();
       const allLandmarks = PoseDetector.detect(video, ts);
       const lm = allLandmarks[0] ?? null;
-=======
-  const [cameraReady, setCameraReady]   = useState(false);
-  const [cameraError, setCameraError]   = useState(null);
-  const [poseReady,   setPoseReady]     = useState(false);
-  const [lastAngles,  setLastAngles]    = useState(null);
-  const [lastGesture, setLastGesture]   = useState({});
-  const [poseDetected, setPoseDetected] = useState(false);
-
-  const startCamera = useCallback(async () => {
-    setCameraError(null);
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 640, height: 480, facingMode: "user" },
-      });
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        setCameraReady(true);
-      }
-    } catch (e) {
-      setCameraError(e.message || "Kamera tidak dapat diakses");
-    }
-    // Init PoseDetector in parallel
-    try {
-      await PoseDetector.init();
-      setPoseReady(true);
-    } catch (e) {
-      console.warn("[Camera] PoseDetector init failed:", e);
-    }
-  }, []);
-
-  const startLoop = useCallback((moveTarget, onDetect) => {
-    const loop = () => {
-      const video  = videoRef.current;
-      const canvas = canvasRef.current;
-      if (!video || !canvas || !PoseDetector.ready) {
-        rafRef.current = requestAnimationFrame(loop);
-        return;
-      }
-      canvas.width  = video.videoWidth  || video.clientWidth;
-      canvas.height = video.videoHeight || video.clientHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const ts = performance.now();
-      const allLandmarks = PoseDetector.detect(video, ts);
-      const lm = allLandmarks[0] ?? null;
-
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
       if (lm) {
         setPoseDetected(true);
         PoseDetector.drawSkeleton(ctx, canvas, lm);
         const angles  = PoseDetector.extractAngles(lm);
         setLastAngles(angles);
-<<<<<<< HEAD
         setLastGesture(GestureDetector.detect(angles, 0));
         if (moveTargetRef.current && angles) {
           const detected = GestureDetector.checkMove(moveTargetRef.current, angles, 0);
           if (detected && !lastGestRef.current) {
             onDetectRef.current && onDetectRef.current(angles);
-=======
-        const gesture = GestureDetector.detect(angles, 0);
-        setLastGesture(gesture);
-
-        if (moveTarget && angles) {
-          const detected = GestureDetector.checkMove(moveTarget, angles, 0);
-          // Rising edge — fire only once per gesture
-          if (detected && !lastGestRef.current) {
-            onDetect && onDetect(angles, gesture);
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
           }
           lastGestRef.current = detected;
         }
@@ -357,7 +288,6 @@ function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
     rafRef.current = requestAnimationFrame(loop);
   }, []);
 
-<<<<<<< HEAD
   const startCamera = useCallback(async () => {
     setCameraError(null);
     let stream;
@@ -404,15 +334,10 @@ function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
     if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
     moveTargetRef.current = null;
     onDetectRef.current   = null;
-=======
-  const stopCamera = useCallback(() => {
-    if (rafRef.current)  { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(t => t.stop());
       streamRef.current = null;
     }
-<<<<<<< HEAD
     // Clear srcObject from hidden video (don't null videoRef itself)
     if (videoRef.current) { videoRef.current.srcObject = null; }
     if (canvasRef.current) {
@@ -422,10 +347,6 @@ function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
     setCameraReady(false);
     setPoseDetected(false);
     setPoseReady(false);
-=======
-    setCameraReady(false);
-    setPoseDetected(false);
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
     GestureDetector.resetAll();
   }, []);
 
@@ -440,7 +361,6 @@ function useCameraTracking({ enabled = true, onGestureDetected } = {}) {
 }
 
 // ─── CAMERA VIEW COMPONENT ────────────────────────────────────────────────────
-<<<<<<< HEAD
 function CameraView({ videoRef, canvasRef, cameraReady, cameraError, poseDetected, poseReady, height = 220, style = {} }) {
   const displayVideoRef = useRef(null);
 
@@ -455,10 +375,6 @@ function CameraView({ videoRef, canvasRef, cameraReady, cameraError, poseDetecte
     }
   }, [cameraReady, videoRef]);
 
-=======
-// Drop-in camera panel — overlays skeleton canvas on the video feed.
-function CameraView({ videoRef, canvasRef, cameraReady, cameraError, poseDetected, poseReady, height = 220, style = {} }) {
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   return (
     <div style={{
       position: "relative", width: "100%", height,
@@ -468,11 +384,7 @@ function CameraView({ videoRef, canvasRef, cameraReady, cameraError, poseDetecte
     }}>
       {/* Video feed (mirrored) */}
       <video
-<<<<<<< HEAD
         ref={displayVideoRef}
-=======
-        ref={videoRef}
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
         autoPlay playsInline muted
         style={{
           position: "absolute", inset: 0,
@@ -1380,26 +1292,17 @@ function MiniGameView({ mission, gameState, onRep, onBack, onReplay }) {
 
   const toggleCamera = async () => {
     if (cameraOn) { cam.stopCamera(); setCameraOn(false); }
-<<<<<<< HEAD
     else { setCameraOn(true); await cam.startCamera(); }
-=======
-    else { await cam.startCamera(); setCameraOn(true); }
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   };
 
   // When camera is on, AI detects the current move and auto-counts reps
   useEffect(() => {
-<<<<<<< HEAD
     if (!cameraOn || gameState.phase !== "playing") return;
-=======
-    if (!cameraOn || !cam.poseReady || gameState.phase !== "playing") return;
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
     cam.startLoop(currentMove, () => {
       setAiRep(true);
       setTimeout(() => setAiRep(false), 400);
       onRep();
     });
-<<<<<<< HEAD
   }, [cameraOn, cam.cameraReady, gameState.phase, currentMove]);
 
   const MOVE_ICON_MAP = { raise_both:"🙌", squat:"🦵", jump:"⬆️", run:"🏃", raise_right:"✋", raise_left:"🤚" };
@@ -1447,44 +1350,6 @@ function MiniGameView({ mission, gameState, onRep, onBack, onReplay }) {
           </div>
         </div>
       )}
-=======
-  }, [cameraOn, cam.poseReady, gameState.phase, currentMove]);
-
-  if (gameState.phase === "countdown") {
-    return (
-      <div style={{ padding:"40px 32px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"100vh" }}>
-        <div style={{ fontSize:120, fontWeight:900, color:"#a78bfa", animation:"mascotBob 0.5s ease-in-out infinite" }}>
-          {gameState.count > 0 ? gameState.count : "GO!"}
-        </div>
-        <div style={{ fontSize:20, color:"#fff", fontWeight:800, marginTop:24 }}>{mission.icon} {mission.name}</div>
-      </div>
-    );
-  }
-
-  if (gameState.phase === "result") {
-    return (
-      <div style={{ padding:"28px 32px", display:"flex", flexDirection:"column", alignItems:"center", gap:24, minHeight:"100vh" }}>
-        <div style={{ fontSize:80 }}>{completed ? "🎉" : "😅"}</div>
-        <div style={{ fontSize:32, fontWeight:900, color:"#fff" }}>{completed ? "Berhasil! 🏆" : "Waktu Habis!"}</div>
-        <div style={{ fontSize:24, fontWeight:700, color:"#fbbf24" }}>{[...Array(3)].map((_,i) => i < stars ? "⭐" : "☆").join("")}</div>
-        <div style={{ fontSize:48, fontWeight:900, color:"#22c55e" }}>{gameState.score} pts</div>
-        <div style={{ display:"flex", gap:14 }}>
-          <button onClick={onReplay} style={{ padding:"14px 28px", background:"linear-gradient(135deg,#22c55e,#16a34a)", border:"none", borderRadius:16, color:"#fff", fontWeight:900, fontSize:16, cursor:"pointer", fontFamily:"'Nunito', sans-serif" }}>
-            🔄 Main Lagi
-          </button>
-          <button onClick={onBack} style={{ padding:"14px 28px", background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:16, color:"#fff", fontWeight:800, fontSize:16, cursor:"pointer", fontFamily:"'Nunito', sans-serif" }}>
-            🗺️ Kembali
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const MOVE_ICON_MAP = { raise_both:"🙌", squat:"🦵", jump:"⬆️", run:"🏃", raise_right:"✋", raise_left:"🤚" };
-
-  return (
-    <div style={{ padding:"28px 32px", display:"flex", flexDirection:"column", gap:20, minHeight:"100vh" }}>
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div style={{ fontSize:18, fontWeight:900, color:"#fff" }}>{mission.icon} {mission.name}</div>
         <div style={{ display:"flex", gap:8 }}>
@@ -1504,13 +1369,8 @@ function MiniGameView({ mission, gameState, onRep, onBack, onReplay }) {
         </div>
       </div>
 
-<<<<<<< HEAD
       {/* Camera panel — always rendered so videoRef is attached to DOM */}
       <div style={{ display: cameraOn ? 'block' : 'none' }}>
-=======
-      {/* Camera panel (only when on) */}
-      {cameraOn && (
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
         <CameraView
           videoRef={cam.videoRef}
           canvasRef={cam.canvasRef}
@@ -1520,11 +1380,7 @@ function MiniGameView({ mission, gameState, onRep, onBack, onReplay }) {
           poseReady={cam.poseReady}
           height={200}
         />
-<<<<<<< HEAD
       </div>
-=======
-      )}
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
       {/* AI rep flash */}
       {aiRep && (
@@ -1638,20 +1494,12 @@ function ChallengeScreen({ challenges, triggerConfetti, addXP, addActivity }) {
 
   const toggleCamera = async () => {
     if (cameraOn) { cam.stopCamera(); setCameraOn(false); setEmotionMsg(""); }
-<<<<<<< HEAD
     else { setCameraOn(true); await cam.startCamera(); }
-=======
-    else { await cam.startCamera(); setCameraOn(true); }
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   };
 
   // Emotion feedback loop — runs independently of game
   useEffect(() => {
-<<<<<<< HEAD
     if (!cameraOn) return;
-=======
-    if (!cameraOn || !cam.poseReady) return;
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
     const emotionInterval = setInterval(() => {
       if (cam.lastAngles) {
         const emotion = EmotionDetector.detect(cam.lastAngles);
@@ -1659,7 +1507,6 @@ function ChallengeScreen({ challenges, triggerConfetti, addXP, addActivity }) {
       }
     }, 3000);
     return () => clearInterval(emotionInterval);
-<<<<<<< HEAD
   }, [cameraOn, cam.lastAngles]);
 
   // Auto-detect gesture for current challenge
@@ -1667,15 +1514,6 @@ function ChallengeScreen({ challenges, triggerConfetti, addXP, addActivity }) {
     if (!cameraOn || !challengeActive || !currentChallenge || gameOver) return;
     cam.startLoop(currentChallenge.move, () => handleCorrect());
   }, [cameraOn, challengeActive, currentChallenge?.move, gameOver]);
-=======
-  }, [cameraOn, cam.poseReady, cam.lastAngles]);
-
-  // Auto-detect gesture for current challenge
-  useEffect(() => {
-    if (!cameraOn || !cam.poseReady || !challengeActive || !currentChallenge || gameOver) return;
-    cam.startLoop(currentChallenge.move, () => handleCorrect());
-  }, [cameraOn, cam.poseReady, challengeActive, currentChallenge?.move, gameOver]);
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
   const startMotionChallenge = () => {
     setScore(0); setCombo(1); setRound(0); setHistory([]); setGameOver(false);
@@ -1847,12 +1685,7 @@ function ChallengeScreen({ challenges, triggerConfetti, addXP, addActivity }) {
         </div>
 
         {/* Camera panel */}
-<<<<<<< HEAD
         <div style={{ display: cameraOn ? 'block' : 'none', marginBottom:16 }}>
-=======
-        {cameraOn && (
-          <div style={{ marginBottom:16 }}>
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
             <CameraView
               videoRef={cam.videoRef}
               canvasRef={cam.canvasRef}
@@ -1872,10 +1705,6 @@ function ChallengeScreen({ challenges, triggerConfetti, addXP, addActivity }) {
               </div>
             )}
           </div>
-<<<<<<< HEAD
-=======
-        )}
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
         {!challengeActive ? (
           <button
@@ -1990,20 +1819,12 @@ function WarmupScreen({ state, setState, addXP, addActivity, tryAwardBadge, trig
 
   const toggleCamera = async () => {
     if (cameraOn) { cam.stopCamera(); setCameraOn(false); setEmotionMsg(""); }
-<<<<<<< HEAD
     else { setCameraOn(true); await cam.startCamera(); }
-=======
-    else { await cam.startCamera(); setCameraOn(true); }
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   };
 
   // Emotion detection loop
   useEffect(() => {
-<<<<<<< HEAD
     if (!cameraOn) return;
-=======
-    if (!cameraOn || !cam.poseReady) return;
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
     const interval = setInterval(() => {
       if (cam.lastAngles) {
         const emotion = EmotionDetector.detect(cam.lastAngles);
@@ -2012,7 +1833,6 @@ function WarmupScreen({ state, setState, addXP, addActivity, tryAwardBadge, trig
       }
     }, 3000);
     return () => clearInterval(interval);
-<<<<<<< HEAD
   }, [cameraOn, cam.lastAngles]);
 
   // AI gesture loop during play
@@ -2022,17 +1842,6 @@ function WarmupScreen({ state, setState, addXP, addActivity, tryAwardBadge, trig
     if (!move) return;
     cam.startLoop(move.id, () => doRep());
   }, [cameraOn, phase, moveIdx]);
-=======
-  }, [cameraOn, cam.poseReady, cam.lastAngles]);
-
-  // AI gesture loop during play
-  useEffect(() => {
-    if (!cameraOn || !cam.poseReady || phase !== "playing") return;
-    const move = WARMUP_MOVES[moveIdxRef.current];
-    if (!move) return;
-    cam.startLoop(move.id, () => doRep());
-  }, [cameraOn, cam.poseReady, phase, moveIdx]);
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
   const startWarmup = () => {
     setPhase("countdown"); setCountdown(3); setMoveIdx(0); setReps(0); setEnergy(0);
@@ -2284,24 +2093,14 @@ function MiniBattleScreen({ state, setState, addActivity, tryAwardBadge, trigger
 
   const toggleCamera = async () => {
     if (cameraOn) { cam.stopCamera(); setCameraOn(false); }
-<<<<<<< HEAD
     else { setCameraOn(true); await cam.startCamera(); }
-=======
-    else { await cam.startCamera(); setCameraOn(true); }
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
   };
 
   // AI gesture detection for relay
   useEffect(() => {
-<<<<<<< HEAD
     if (!cameraOn || phase !== "playing" || !currentChallenge) return;
     cam.startLoop(currentChallenge.move, () => doRep());
   }, [cameraOn, phase, currentChallenge?.move]);
-=======
-    if (!cameraOn || !cam.poseReady || phase !== "playing" || !currentChallenge) return;
-    cam.startLoop(currentChallenge.move, () => doRep());
-  }, [cameraOn, cam.poseReady, phase, currentChallenge?.move]);
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
   const startRelay = () => {
     setRedScore(0); setBlueScore(0); setActiveTeam("red"); setRound(0);
@@ -2418,14 +2217,8 @@ function MiniBattleScreen({ state, setState, addActivity, tryAwardBadge, trigger
         </button>
       </div>
 
-<<<<<<< HEAD
       {/* Camera panel for battle — always rendered so videoRef is attached */}
       <div style={{ display: cameraOn ? 'block' : 'none', marginBottom:16 }}>
-=======
-      {/* Camera panel for battle */}
-      {cameraOn && (
-        <div style={{ marginBottom:16 }}>
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
           <CameraView
             videoRef={cam.videoRef}
             canvasRef={cam.canvasRef}
@@ -2436,10 +2229,6 @@ function MiniBattleScreen({ state, setState, addActivity, tryAwardBadge, trigger
             height={180}
           />
         </div>
-<<<<<<< HEAD
-=======
-      )}
->>>>>>> 77021858b983a370b8dd597197dc747e662e56b0
 
       {phase === "idle" && (
         <div style={{ textAlign:"center", marginBottom:24 }}>
